@@ -1,0 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #4d2d52; /* Deep purple */
+    font-family: 'Garamond', serif; /* Fancy serif font */
+    font-size: 36px; /* Larger font size */
+    text-align: center;
+    margin-top: 50px; /* Adjust as needed */
+    text-transform: uppercase; /* Uppercase text */
+    text-decoration: underline;
+}
+
+div {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 18px;
+    color: #333;
+}
+
+a {
+    color: #4d2d52; /* Deep purple */
+    font-family: 'Garamond', serif; /* Fancy serif font */
+    font-size: 36px; /* Larger font size */
+    text-align: center;
+    margin-top: 50px; /* Adjust as needed */
+    text-transform: uppercase; /* Uppercase text */
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #87549b; /* Darker shade of purple on hover */
+}

@@ -1,0 +1,80 @@
+<?php
+session_start(); // Start the session
+// Check if the user is logged in, otherwise redirect to login page
+if (!isset($_SESSION["email"])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Include database connection
+include 'db_conn.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve the values from the form
+    $restaurantid = $_POST['restaurantid'];
+    $rating = $_POST['rating'];
+    $review = $_POST['review'];
+
+    // Get the current rating and number of reviews from the database
+    $sql = "SELECT ratings, num_reviews FROM searchfood WHERE restaurantid = $restaurantid";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $currentRating = $row['ratings'];
+        $numReviews = $row['num_reviews'];
+
+        // Calculate the new average rating
+        $newRating = (($currentRating * $numReviews) + $rating) / ($numReviews + 1);
+
+        // Update the restaurant's rating and number of reviews in the database
+        $updateSql = "UPDATE searchfood SET ratings = $newRating, num_reviews = num_reviews + 1 WHERE restaurantid = $restaurantid";
+        if ($conn->query($updateSql) === TRUE) {
+            $email =($_SESSION["email"]);
+            // Insert the new review into the database
+            $insertSql = "INSERT INTO reviews (id, ratings, review,email) VALUES ($restaurantid, $rating, '$review','$email')";
+            if ($conn->query($insertSql) === TRUE) {
+                echo "Review submitted successfully";?>
+                 <h2>Thank you for your time!!!</h2>
+                
+                <a href="first.html">GO BACK TO HOME</a>
+                <?php
+            } else {
+                echo "Error inserting review: " . $conn->error;
+            }
+        } else {
+            echo "Error updating rating: " . $conn->error;
+        }
+    } else {
+        echo "Restaurant not found";
+    }
+} else {
+    // If the request method is not POST, redirect the user
+    header("Location: login.php");
+    exit();
+}
+<style>
+h2 {
+    color: #4d2d52; /* Deep purple */
+    font-family: 'Garamond', serif; /* Fancy serif font */
+    font-size: 36px; /* Larger font size */
+    text-align: center;
+    margin-top: 50px; /* Adjust as needed */
+    text-transform: uppercase; /* Uppercase text */
+    text-decoration: underline;
+}
+
+a {
+    font-size: 24px; /* Larger font size for the link */
+    color: #6b3f7e; /* Dark purple */
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: block; /* Make the link a block element to center it */
+    margin-top: 20px; /* Add some spacing between the heading and the link */
+    text-align: center;
+}
+
+a:hover {
+    color: #87549b; /* Darker shade of purple on hover */
+}
+
+</style>
